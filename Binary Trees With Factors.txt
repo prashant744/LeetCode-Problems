@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int numFactoredBinaryTrees(vector<int>& arr) {
+        sort(arr.begin(), arr.end());
+        map<int,long> dp;
+        long ret=0;
+        
+        for(int i=0;i<arr.size();i++){
+            dp[arr[i]]=1;
+            for (auto it = dp.begin(); it != dp.end(); ++it) {
+                if (arr[i] % it->first == 0 && dp.count(arr[i]/it->first)) {
+                    dp[arr[i]] = (dp[arr[i]] + it->second * dp[arr[i]/it->first]) % MOD;
+                }
+            }
+            ret = (ret + dp[arr[i]]) % MOD;
+        }
+        return ret;
+        
+    }
+    private:
+         int MOD = 1e9 + 7;
+};
