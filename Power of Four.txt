@@ -2,9 +2,10 @@ class Solution {
 public:
     bool isPowerOfFour(int n) {
         
-       if(n == pow(4, (log(n)/log(4)))){
-            return true;
-       }
-        return false;
+      if(n<=0) return false;
+        long product = pow(2,31);
+        int num = sqrt(n);
+        if(num*num!=n) return false;
+        return product%num==0;
     }
 };
