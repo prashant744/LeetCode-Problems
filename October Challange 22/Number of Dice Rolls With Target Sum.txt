@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int mod = 1000000007;
+    int dp[31][1001];
+    int recur(int i, int n, int k, int t){
+        if(i > n && t == 0){
+            
+            return  1;
+        }
+        
+        if(i > n) return 0;
+        
+        if(t <= 0) return 0;
+        if(dp[i][t] != -1) return dp[i][t];
+        int cnt = 0;
+        for(int j = 1; j <= k; j++){
+            cnt = ((cnt)%mod + (recur(i + 1, n, k, t - j))%mod)%mod;
+        }
+        return dp[i][t] = cnt;
+    }
+    int numRollsToTarget(int n, int k, int target) {
+        memset(dp, -1, sizeof(dp));
+        return recur(1, n, k, target);
+        ;
+    }
+};
