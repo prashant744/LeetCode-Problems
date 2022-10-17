@@ -1,0 +1,11 @@
+class Solution {
+public:
+    bool checkIfPangram(string sentence) {
+        unordered_map<char , int>m;
+        for(auto it : sentence){
+            m[it++];
+        }
+        return 26==m.size();
+    }
+};
+
