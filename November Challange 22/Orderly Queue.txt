@@ -1,0 +1,19 @@
+class Solution {
+public:
+    string orderlyQueue(string s, int k) {
+        if(k==1){
+            int n=s.size();
+            string bigstring=s+s;
+            string result=s;
+            for(int i=1;i<n;i++){
+                string temp =bigstring.substr(i,n);
+                if(temp<result){
+                    result=temp;
+                }
+            }
+            return result;
+        }
+        sort(s.begin(),s.end());
+        return s;
+    }
+};
