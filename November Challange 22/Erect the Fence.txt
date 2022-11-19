@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int getRotationAngle(vector<int> A, vector<int> B, vector<int> C) {
+        return ((B[0] - A[0]) * (C[1] - A[1])) - ((B[1] - A[1]) * (C[0] - A[0]));
+    }
+    
+    
+    vector<vector<int>> outerTrees(vector<vector<int>>& trees) {
+        if (trees.size() <= 3) return trees;
+        sort(trees.begin(), trees.end());
+        
+		
+        vector<vector<int>> leftTrees;
+        leftTrees.push_back(trees[0]);
+        leftTrees.push_back(trees[1]);
+        for (int i = 2; i < trees.size(); i++) {
+            int ls = leftTrees.size();
+            while (leftTrees.size() >= 2 && getRotationAngle(leftTrees[ls-2], leftTrees[ls-1], trees[i]) > 0) {
+                leftTrees.pop_back();
+                ls--;
+            }
+            leftTrees.push_back(trees[i]);
+        }
+        
+        vector<vector<int>> rightTrees;
+        rightTrees.push_back(trees[trees.size() - 1]);
+        rightTrees.push_back(trees[trees.size() - 2]);
+        for (int i = trees.size() - 3; i >= 0; --i) {
+            int rs = rightTrees.size(); 
+            while (rightTrees.size() >= 2 && getRotationAngle(rightTrees[rs-2], rightTrees[rs-1], trees[i]) > 0) {
+                rightTrees.pop_back();
+                rs--;
+            }
+            rightTrees.push_back(trees[i]);
+        }
+        
+        rightTrees.pop_back();
+        leftTrees.pop_back();
+        for (int i = 0; i < rightTrees.size(); i++) {
+            leftTrees.push_back(rightTrees[i]);
+        }
+        
+	
+        sort(leftTrees.begin(), leftTrees.end());
+        leftTrees.erase(std::unique(leftTrees.begin(), leftTrees.end()), leftTrees.end());
+        
+        return leftTrees;
+    }
+};
