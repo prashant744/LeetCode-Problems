@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<int>> findWinners(vector<vector<int>>& matches){
+        vector<int>noLoss;
+        vector<int>oneLoss;
+        map<int, int>mp;
+        for (vector<int>match : matches) { mp[match[1]]++; }  
+        for (vector<int>match : matches){
+            int winner = match[0];
+            if (mp[winner] == 0){
+                noLoss.push_back(winner);
+                mp[winner] = -1;
+            }
+            
+        }
+        for (auto it : mp){
+            int loseCount = it.second;
+            int loser = it.first;
+            if (loseCount != -1 && loseCount == 1) oneLoss.push_back(loser);
+        }
+        sort(noLoss.begin(), noLoss.end());
+        return {noLoss, oneLoss};
+        
+    }
+};
