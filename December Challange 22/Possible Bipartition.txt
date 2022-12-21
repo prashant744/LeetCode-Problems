@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int c[2001];
+    vector<int> adj[2001];
+    bool dfs(int i, int cu = 0) {
+        if(c[i] >= 0) {
+            if(c[i] ^ cu) { 
+                return false;
+            }
+            return true;
+        }
+        c[i] = cu;  
+        for(auto &node : adj[i]) {
+            if(!dfs(node, cu ^ 1)) {
+                return false;
+            } 
+        }
+        return true;
+    }
+
+    bool possibleBipartition(int n, vector<vector<int>>& dis) {
+        for(int i = 1; i <= n; i++) {
+            c[i] = -1;
+        }
+        for(auto &j : dis) {
+            adj[j[0]].push_back(j[1]);
+            adj[j[1]].push_back(j[0]);
+        }
+        for(int i = 1; i <= n; i++) {
+            if(c[i] < 0) {
+                if(!dfs(i)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
