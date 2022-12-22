@@ -1,0 +1,72 @@
+class Solution {
+public:
+    void buildGraph(vector<vector<int>>& graph,vector<vector<int>>& edges)
+    {
+        for(auto e:edges)
+        {
+            graph[e[0]].push_back(e[1]);
+            graph[e[1]].push_back(e[0]);
+        }
+    }
+    int countNode(vector<vector<int>>& graph,vector<int>& node,vector<bool>& vis,int ind)
+    {
+        vis[ind]=true;
+        node[ind]=1;
+        for(auto it:graph[ind])
+        {
+            if(vis[it]==false)
+            {
+                node[ind]+=countNode(graph,node,vis,it);
+            }
+        }
+        return node[ind];
+    }
+    void sumNode(vector<vector<int>>& graph,vector<bool>& vis,int& dist0,int ind,int len)
+    {
+        vis[ind]=true;
+        dist0+=len;
+        for(auto it:graph[ind])
+        {
+            if(vis[it]==false)
+            {
+                sumNode(graph,vis,dist0,it,len+1);
+            }
+        }
+    }
+
+    void traverse(vector<vector<int>>& graph,vector<int>& node,vector<int>& res)
+    {
+        vector<bool>vis(res.size(),false);
+        queue<int>q;
+        q.push(0);
+        while(q.empty()==false)
+        {
+            int cur=q.front();
+            q.pop();
+            vis[cur]=true;
+            for(auto it:graph[cur])
+            {
+                if(vis[it]==false)
+                {
+                    q.push(it);
+                    res[it]=res[cur]-node[it]+(res.size()-node[it]);
+                }
+            }
+        }
+    }
+    vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
+        vector<vector<int>>graph(n);
+        buildGraph(graph,edges);
+        vector<int>node(n,0);
+        vector<bool>vis(n,false);
+        countNode(graph,node,vis,0);
+        int dist0=0;
+        vis.assign(n,false);
+        sumNode(graph,vis,dist0,0,0);
+
+        vector<int>res(n,0);
+        res[0]=dist0;
+        traverse(graph,node,res);
+        return res;
+    }
+};
