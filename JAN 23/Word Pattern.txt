@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool wordPattern(string pattern, string s) {
+        map<string,char>map;
+        stringstream ss(s);
+        string str;
+        set<char>st;
+        for(char c:pattern){
+            st.insert(c);
+        }
+        int i=0;
+        while(ss>>str){
+            if(map[str] && map[str]!=pattern[i])return false;
+            map[str]=pattern[i++];
+        }
+        if(map.size()!=st.size())return false;
+        return true;
+    }
+};
