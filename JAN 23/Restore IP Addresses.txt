@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<string>ans;
+    void helper(string res,string curr,int index,string s){
+        if(index==s.length()){
+            if(curr.empty() && count(res.begin(),res.end(),'.')==3){
+                ans.push_back(res);
+            }
+            return;
+        }
+
+        if(!curr.empty() && stoi(curr)==0)return;
+        curr.push_back(s[index]);
+        if(stoi(curr)>255)return;
+        helper(res,curr,index+1,s);
+        
+        if(!res.empty()){
+            helper(res+'.'+curr,"",index+1,s);
+        }else{
+            helper(curr,"",index+1,s);
+        }
+
+    }
+
+    vector<string> restoreIpAddresses(string s) {
+        helper("","",0,s);
+        return ans;
+    }
+};
