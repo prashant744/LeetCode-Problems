@@ -1,0 +1,37 @@
+class SummaryRanges {
+public:
+    map<int,int>start,end;
+    unordered_map<int,int>mp;
+    SummaryRanges() {
+        
+    }
+    
+    void addNum(int value){
+        if(mp.find(value)!=mp.end()) return;
+        int st = value,en = value;
+        if(end.find(value-1)!=end.end()){
+            st = end[value-1]; 
+            end.erase(value-1); start.erase(st);
+        }
+        if(start.find(value+1)!=start.end()){
+            en = start[value+1]; 
+            end.erase(en); start.erase(value+1);
+        }
+        start[st] = en; end[en] = st; mp[value]++;
+    }
+    
+    vector<vector<int>> getIntervals() {
+        vector<vector<int>>res;
+        for(auto &[x,y]:start){
+            res.push_back({x,y});
+        }
+        return res;
+    }
+};
+
+/**
+ * Your SummaryRanges object will be instantiated and called as such:
+ * SummaryRanges* obj = new SummaryRanges();
+ * obj->addNum(value);
+ * vector<vector<int>> param_2 = obj->getIntervals();
+ */
